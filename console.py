@@ -157,7 +157,7 @@ class HBNBCommand(cmd.Cmd):
                 # Cast the value to appropriate type.
                 if value[0] == '"' and value[-1] == '"':
                     value = value[1:-1].replace("_", " ").replace("\\", "")
-                elif "." in value and value.split(".")[0].isdigit():
+                elif "." in value:
                     value = float(value)
                 else:
                     value = int(value)
