@@ -10,26 +10,14 @@ package { 'nginx':
   before => Exec['update server'],
 }
 
-file { '/data/':
-  ensure => directory,
-  group  => 'ubuntu',
-  owner  => 'ubuntu'
+exec { 'create /data/':
+  provider => shell,
+  command  => 'mkdir -p /data/web_static/releases/test/ /data/web_static/shared/'
 }
 
-file { '/data/web_static/':
-  ensure => directory
-}
-
-file { '/data/web_static/releases/':
-  ensure => directory
-}
-
-file { '/data/web_static/shared/':
-  ensure => directory
-}
-
-file { '/data/web_static/releases/test/':
-  ensure => directory
+exec { 'change owner':
+  provider => shell,
+  command  => 'sudo chown -hR ubuntu:ubuntu /data/'
 }
 
 file { '/data/web_static/releases/test/index.html':
@@ -37,14 +25,9 @@ file { '/data/web_static/releases/test/index.html':
   content => 'Test web_static'
 }
 
-exec{ 'remove current':
+exec { 'create current symlink':
   provider => shell,
-  command  => 'test -L /data/web_static/current && rm -rf /data/web_static/current'
-}
-file { '/data/web_static/releases/current/':
-  ensure => link,
-  target => '/data/web_static/releases/test',
-  before => Exec['remove current'],
+  command  => 'ln -fs /data/web_static/releases/test/ /data/web_static/current'
 }
 
 exec { 'update nginx configuration':

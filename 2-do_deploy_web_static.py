@@ -61,12 +61,8 @@ def do_deploy(archive_path):
     if run(f'rm -f /tmp/{archive_filename}').failed:
         return False
 
-    # Remove /data/web_static/current symbolic link and create a new one.
-    if run('rm -fr /data/web_static/current').failed:
-        return False
-
     if run(
-        f'ln -s {releases_dir}{archive_dir} /data/web_static/current'
+        f'ln -sf {releases_dir}{archive_dir} /data/web_static/current'
     ).failed:
         return False
 
