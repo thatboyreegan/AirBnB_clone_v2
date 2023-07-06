@@ -21,7 +21,8 @@ def do_pack():
         warn_only=True
     ):
         if local('test -d versions').failed:
-            local('mkdir versions')
+            if local('mkdir versions').failed:
+                return None
 
     # date in the format [<year> <month> <day> <hour> <minute> <second>]
     date = datetime.now().strftime("%Y%m%d%H%M%S")
@@ -31,8 +32,7 @@ def do_pack():
     print(f'Packing web_static to {archive_path}')
     # Create archive for web_static in versions directory
 
-    with settings(warn_only=True):
-        if local(f'tar -cvzf {archive_path} web_static').failed:
-            return None
+    if local(f'tar -cvzf {archive_path} web_static').failed:
+        return None
 
     return archive_path

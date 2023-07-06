@@ -6,33 +6,15 @@
 	sudo apt-get install nginx -y
 }
 
-[[ ! -d /data/ ]] && {
-	mkdir /data/
-}
+sudo mkdir -p /data/web_static/releases/test
+sudo mkdir -p /data/web_static/shared
 
-[[ ! -d /data/web_static ]] && {
-	mkdir /data/web_static/
-}
+echo "Test web_static" | sudo tee /data/web_static/releases/test/index.html > /dev/null
 
-[[ ! -d /data/web_static/releases ]] && {
-	mkdir /data/web_static/releases/
-}
+sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
 
-[[ ! -d /data/web_static/shared ]] && {
-	mkdir /data/web_static/shared/
-}
+sudo chown -hR ubuntu:ubuntu /data/
 
-[[ ! -d /data/web_static/releases/test ]] && {
-	mkdir /data/web_static/releases/test/
-}
-
-echo "Test web_static" > /data/web_static/releases/test/index.html
-
-[[ -L /data/web_static/current ]] && rm -r /data/web_static/current
-ln -s /data/web_static/releases/test/ /data/web_static/current
-
-sudo chown -R ubuntu:ubuntu /data/
-
-sed -i "53i\ \n\tlocation /hbnb_static {\n\t\talias /data/web_static/current/;\n\t}\n" /etc/nginx/sites-available/default
+sudo sed -i "53i\ \n\tlocation /hbnb_static {\n\t\talias /data/web_static/current/;\n\t}\n" /etc/nginx/sites-available/default
 
 sudo service nginx restart
