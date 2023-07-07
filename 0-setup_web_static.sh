@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Sets up web servers for the dployment of web_static
 
-[[ -z "$(which nginx)" ]] && {
+[[ -z "$(command -v nginx)" ]] && {
 	sudo apt-get update -yqq
 	sudo apt-get install nginx -y
 }

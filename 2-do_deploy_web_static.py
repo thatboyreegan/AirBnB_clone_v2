@@ -64,8 +64,11 @@ def do_deploy(archive_path):
 
     # Update the /data/web_static/current symbolic link to point to the
     # new release that has been deployed.
+    if run('rm -fr /data/web_static/current').failed:
+        return False
+
     if run(
-        'ln -sf /data/web_static/releases/{} /data/web_static/current'.format(
+        'ln -s /data/web_static/releases/{} /data/web_static/current'.format(
             archive_dir)
     ).failed:
         return False

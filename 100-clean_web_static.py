@@ -20,13 +20,8 @@ def clean_local_files(number):
     Args:
         number (int): Number of files to delete.
     """
-
-    with settings(
-        # hide('warnings', 'stderr', 'stdout', 'running'),
-        warn_only=True
-    ):
-        with lcd('versions'):
-            local('ls -tr | head -n -{} | xargs rm -rf'.format(number))
+    with lcd('versions'):
+        local('ls -tr | head -n -{} | xargs rm -rf'.format(number))
 
 
 def clean_remote_files(number):
@@ -35,12 +30,8 @@ def clean_remote_files(number):
     Args:
         number (int): Number of files to delete.
     """
-    with settings(
-        # hide('warnings', 'stderr', 'stdout', 'running'),
-        warn_only=True
-    ):
-        with cd('/data/web_static/releases'):
-            run('ls -tr | head -n -{} | xargs rm -rf'.format(number))
+    with cd('/data/web_static/releases'):
+        run('ls -tr | head -n -{} | xargs rm -rf'.format(number))
 
 
 def do_clean(number=0):
