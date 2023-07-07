@@ -26,7 +26,7 @@ def clean_local_files(number):
         warn_only=True
     ):
         with lcd('versions'):
-            local(f'ls -tr | head -n -{number} | xargs rm -rf')
+            local('ls -tr | head -n -{} | xargs rm -rf'.format(number))
 
 
 def clean_remote_files(number):
@@ -40,7 +40,7 @@ def clean_remote_files(number):
         warn_only=True
     ):
         with cd('/data/web_static/releases'):
-            run(f'ls -tr | head -n -{number} | xargs rm -rf')
+            run('ls -tr | head -n -{} | xargs rm -rf'.format(number))
 
 
 def do_clean(number=0):

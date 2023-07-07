@@ -27,12 +27,12 @@ def do_pack():
     # date in the format [<year> <month> <day> <hour> <minute> <second>]
     date = datetime.now().strftime("%Y%m%d%H%M%S")
 
-    archive_path = f'versions/web_static_{date}.tgz'
+    archive_path = 'versions/web_static_{}.tgz'.format(date)
 
-    print(f'Packing web_static to {archive_path}')
+    print('Packing web_static to {}'.format(archive_path))
     # Create archive for web_static in versions directory
 
-    if local(f'tar -cvzf {archive_path} web_static').failed:
+    if local('tar -cvzf {} web_static'.format(archive_path)).failed:
         return None
 
     return archive_path
