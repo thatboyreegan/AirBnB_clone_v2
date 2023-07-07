@@ -15,11 +15,6 @@ exec { 'create /data/':
   command  => 'mkdir -p /data/web_static/releases/test/ /data/web_static/shared/'
 }
 
-exec { 'change owner':
-  provider => shell,
-  command  => 'sudo chown -hR ubuntu:ubuntu /data/'
-}
-
 file { '/data/web_static/releases/test/index.html':
   ensure  => present,
   content => 'Test web_static'
@@ -30,9 +25,14 @@ exec { 'create current symlink':
   command  => 'ln -fs /data/web_static/releases/test/ /data/web_static/current'
 }
 
+exec { 'change owner':
+  provider => shell,
+  command  => 'sudo chown -hR ubuntu:ubuntu /data/'
+}
+
 exec { 'update nginx configuration':
   provider => shell,
-  command  => 'sed -i "53i\ \n\tlocation /hbnb_static {\n\t\talias /data/web_static/current/;\n\t}\n" /etc/nginx/sites-available/default',
+  command  => 'sed -i "53i\ \n\tlocation /hbnb_static {\n\t\talias /data/web_static/current/;\n\t}" /etc/nginx/sites-available/default',
   notify   => Service['nginx'],
 }
 
